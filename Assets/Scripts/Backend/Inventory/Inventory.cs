@@ -124,9 +124,17 @@ public class Inventory : MonoBehaviour
 	}*/
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.A))
+		if (Input.GetKey(KeyCode.Alpha1))
 		{
 			AddItemDull(itemDatabase.FindItem("Diamond Ore"), 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			AddItemDull(itemDatabase.FindItem("New Axe"), 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha3))
+		{
+			AddItemDull(itemDatabase.FindItem("Diamond Sword"), 1);
 		}
 	}
 
