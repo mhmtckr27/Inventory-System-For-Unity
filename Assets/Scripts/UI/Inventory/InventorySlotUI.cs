@@ -37,7 +37,7 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 	{
 		itemImage.transform.SetParent(borderImage.transform);
 		itemImage.transform.localPosition = Vector3.zero;
-		if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)InventoryUI.InventoryInterface.transform, eventData.position))
+		if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)InventoryUI.InventoryWindow.transform, eventData.position))
 		{
 			SetSlotActive();
 			InventoryUI.OnDropButton();

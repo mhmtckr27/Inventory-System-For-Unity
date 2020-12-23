@@ -21,6 +21,7 @@ public class ButtonsPanel : MonoBehaviour
 	{
 		inventoryUI.ActiveSlotModifiedEvent += UpdateButtons;
 		inventoryUI.ActivePanelTypeChangedEvent += OnActivePanelTypeChanged;
+		UpdateButtons(inventoryUI.ActiveSlot.SlotIndex);
 	}
 	private void OnDisable()
 	{

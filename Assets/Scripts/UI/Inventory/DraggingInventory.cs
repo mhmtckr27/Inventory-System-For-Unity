@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    [SerializeField] private RectTransform inventoryWindowRoot;
+    [SerializeField] private RectTransform inventoryWindow;
     private Vector2 lastMousePosition;
 
     /// <summary>
@@ -29,12 +29,12 @@ public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler,
         Vector2 diff = currentMousePosition - lastMousePosition;
         RectTransform rect = GetComponent<RectTransform>();
 
-        Vector3 newPosition = inventoryWindowRoot.position + new Vector3(diff.x, diff.y, inventoryWindowRoot.transform.position.z);
-        Vector3 oldPos = inventoryWindowRoot.position;
-        inventoryWindowRoot.position = newPosition;
+        Vector3 newPosition = inventoryWindow.position + new Vector3(diff.x, diff.y, inventoryWindow.transform.position.z);
+        Vector3 oldPos = inventoryWindow.position;
+        inventoryWindow.position = newPosition;
         if (!IsRectTransformInsideSreen(rect))
         {
-            inventoryWindowRoot.position = oldPos;
+            inventoryWindow.position = oldPos;
         }
         lastMousePosition = currentMousePosition;
     }

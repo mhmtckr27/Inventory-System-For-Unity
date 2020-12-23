@@ -17,6 +17,8 @@ public class ItemInfoPanel : PanelBase
 
 	private GameObject itemInfoContent;
 
+
+
 	private void Awake()
 	{
 		initalIcon = itemIcon.sprite;
@@ -36,6 +38,7 @@ public class ItemInfoPanel : PanelBase
 		inventoryUI.ActiveSlotModifiedEvent += UpdatePanel;
 		inventoryUI.DisablePanelEvent += OnDisablePanelEvent;
 		inventoryUI.RequestItemInfoPanelEvent += OnRequestItemInfoPanelEvent;
+		UpdatePanel(inventoryUI.ActiveSlot.SlotIndex);
 	}
 
 	private void OnDisable()
@@ -43,6 +46,7 @@ public class ItemInfoPanel : PanelBase
 		inventoryUI.ActiveSlotModifiedEvent -= UpdatePanel;
 		inventoryUI.DisablePanelEvent -= OnDisablePanelEvent;
 		inventoryUI.RequestItemInfoPanelEvent -= OnRequestItemInfoPanelEvent;
+		//Debug.Log("cikti");
 	}
 
 	private void OnDisablePanelEvent()

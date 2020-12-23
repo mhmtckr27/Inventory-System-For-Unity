@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
 		inventoryUI.SwapSlotsEvent -= SwapSlots;
 		inventoryUI.CombineStacksEvent -= CombineStacks;
 	}
-    private void Start()
+    /*private void Start()
 	{
 		if(!AddItemDull(itemDatabase.FindItem("Diamond Sword"), 2))
 		{
@@ -121,7 +121,7 @@ public class Inventory : MonoBehaviour
 			Debug.Log("basaramadik abi");
 		}
 		AddItemDull(itemDatabase.FindItem("New Axe"), 1);
-	}
+	}*/
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.A))
@@ -294,7 +294,10 @@ public class Inventory : MonoBehaviour
 	{
 		InventorySlots[index].Item = item;
 		InventorySlots[index].Amount = amount;
-		SlotUpdatedEvent.Invoke(index);
+		if (SlotUpdatedEvent != null)
+		{
+			SlotUpdatedEvent.Invoke(index);
+		}
 	}
 
 	private bool AddItemDull(ItemData itemToAdd, int amountToAdd)
