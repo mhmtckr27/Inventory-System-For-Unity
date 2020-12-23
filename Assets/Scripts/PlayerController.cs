@@ -9,7 +9,12 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
 		{
-            inventoryWindowRoot.SetActive(!inventoryWindowRoot.activeInHierarchy);
+            CloseInventory();
 		}
+    }
+
+    public void CloseInventory()
+	{
+        inventoryWindowRoot.SetActive(!inventoryWindowRoot.activeInHierarchy);
     }
 }

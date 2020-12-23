@@ -20,6 +20,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ad2af5d40d95d0a41ae1b466d4ab2148, type: 3}
   canBeStacked: 0
   canBeUsed: 1
+  canBeEquipped: 1
   sellPrice: 0
   buyPrice: 0
   itemProperties:
