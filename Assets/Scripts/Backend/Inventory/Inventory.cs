@@ -22,7 +22,6 @@ public class Inventory : MonoBehaviour
     private void Awake()
 	{
 		InitInventorySlots();
-		//InitEquipmentSlots();
 	}
 
 	private void InitInventorySlots()
@@ -54,74 +53,7 @@ public class Inventory : MonoBehaviour
 		inventoryUI.SwapSlotsEvent -= SwapSlots;
 		inventoryUI.CombineStacksEvent -= CombineStacks;
 	}
-    /*private void Start()
-	{
-		if(!AddItemDull(itemDatabase.FindItem("Diamond Sword"), 2))
-		{
-			Debug.Log("couldnt add!");
-		}
-		else
-		{
-			for (int i = 0; i < InventorySlotCount; i++)
-			{
-				if (!SlotIsEmpty(i))
-				{
-					//Debug.Log(inventorySlots[i].Amount + " of " + inventorySlots[i].Item.ItemName + " exists at slot number " + i);
-				}
-			}
-		}
 
-		if (!AddItemDull(itemDatabase.FindItem("Diamond Ore"), 100))
-		{
-			Debug.Log("couldnt add!");
-		}
-		else
-		{
-			for (int i = 0; i < InventorySlotCount; i++)
-			{
-				if (!SlotIsEmpty(i))
-				{
-					//Debug.Log(inventorySlots[i].Amount + " of " + inventorySlots[i].Item.ItemName + " exists at slot number " + i);
-				}
-			}
-		}
-
-		if (!AddItemDull(itemDatabase.FindItem("Diamond Ore"), 5000))
-		{
-			Debug.Log("couldnt add!");
-		}
-		else
-		{
-			for (int i = 0; i < InventorySlotCount; i++)
-			{
-				if (!SlotIsEmpty(i))
-				{
-				}
-			}
-		}
-		RemoveItemFromIndex(5, 5);
-		RemoveItemFromIndex(2, 505);
-
-		if (!AddItemDull(itemDatabase.FindItem("Diamond Ore"), 150))
-		{
-			Debug.Log("couldnt add!");
-		}
-		else
-		{
-			for (int i = 0; i < InventorySlotCount; i++)
-			{
-				if (!SlotIsEmpty(i))
-				{
-					//Debug.Log(inventorySlots[i].Amount + " of " + inventorySlots[i].Item.ItemName + " exists at slot number " + i);
-				}
-			}
-		}
-		if(itemDatabase.FindItem("New Axe") == null)
-		{
-			Debug.Log("basaramadik abi");
-		}
-		AddItemDull(itemDatabase.FindItem("New Axe"), 1);
-	}*/
 	private void Update()
 	{
 		if (Input.GetKey(KeyCode.Alpha1))
@@ -308,12 +240,12 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	private bool AddItemDull(ItemData itemToAdd, int amountToAdd)
+	private int AddItemDull(ItemData itemToAdd, int amountToAdd)
 	{
 		int remaining = amountToAdd;
 		return AddItem(itemToAdd, amountToAdd, ref remaining);
 	}
-	private bool AddItem(ItemData itemToAdd, int amountToAdd, ref int remaining)
+	private int AddItem(ItemData itemToAdd, int amountToAdd, ref int remaining)
 	{
 		ItemData localItem = itemToAdd;
 		int localFoundIndex = 0;
@@ -343,7 +275,7 @@ public class Inventory : MonoBehaviour
 					//stack can take all we want to add. simply add them all.
 					UpdateSlot(itemToAdd, InventorySlots[localFoundIndex].Amount + localAmount, localFoundIndex);
 					remaining = 0;
-					return true;
+					return remaining;
 				}
 
 			}
@@ -364,14 +296,14 @@ public class Inventory : MonoBehaviour
 						//slot can take all amount.
 						UpdateSlot(itemToAdd, localAmount, localFoundIndex);
 						remaining = 0;
-						return true;
+						return remaining;
 					}
 				}
 				else
 				{
 					//no slot available, can not add item.
 					remaining = localAmount;
-					return false;
+					return remaining;
 				}
 			}
 		}
@@ -396,14 +328,14 @@ public class Inventory : MonoBehaviour
 				{
 					//just 1 item so we added.
 					remaining = 0;
-					return true;
+					return remaining;
 				}
 			}
 			else
 			{
 				//no empty slot. can not add item.
 				remaining = localAmount;
-				return false;
+				return remaining;
 			}
 		}
 

@@ -14,8 +14,6 @@ public class ButtonsPanel : MonoBehaviour
 	private void Awake()
 	{
 		inventoryUI = FindObjectOfType<InventoryUI>();
-		//inventoryUI.ActiveSlotModifiedEvent += UpdateButtons;
-		//inventoryUI.ActivePanelTypeChangedEvent += OnActivePanelTypeChanged;
 	}
 	private void OnEnable()
 	{

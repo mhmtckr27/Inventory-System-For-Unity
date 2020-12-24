@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
 	#region Serialized Fields
-	//[SerializeField] private Inventory inventory;
 	[SerializeField] private GameObject inventorySlotPrefab;
 	[SerializeField] private GameObject equipmentSlotPrefab;
 	[SerializeField] private GameObject inventoryWindow;
@@ -24,7 +23,6 @@ public class InventoryUI : MonoBehaviour
 
 	#region Private fields
 	private List<InventorySlotUI> inventorySlotsUI;
-	private List<EquipmentSlotUI> equipmentSlotsUI;
 	private Inventory inventory;
 	#endregion
 
@@ -105,7 +103,6 @@ public class InventoryUI : MonoBehaviour
 			InventorySlotsUI[i].UpdateSlotUI(Inventory.InventorySlots[i]);
 		}
 
-		equipmentSlotsUI = new List<EquipmentSlotUI>();
 		for(int i = Inventory.InventorySlotCount; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)
 		{
 			InventorySlotsUI.Add(Instantiate(equipmentSlotPrefab, Vector3.zero, Quaternion.identity, equipmentPanelContentTransform).GetComponentInChildren<EquipmentSlotUI>());
