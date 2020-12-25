@@ -24,6 +24,7 @@ public class ActiveSlotBorderHandler : MonoBehaviour
 	private void MoveToSlot(int slotIndex)
 	{
 		transform.position = inventoryUI.GetSlotPosition(slotIndex);
+		transform.SetParent(inventoryUI.InventorySlotsUI[slotIndex].transform, true);
 	}
 
 	IEnumerator MoveToSlotDelayed()

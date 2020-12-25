@@ -32,6 +32,11 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 
 	public virtual void OnEndDrag(PointerEventData eventData)
 	{
+		if (SlotUIIsEmpty())
+		{
+			eventData.selectedObject = null;
+			return;
+		}
 		itemImage.transform.SetParent(borderImage.transform);
 		itemImage.transform.localPosition = Vector3.zero;
 		if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)InventoryUI.InventoryWindow.transform, eventData.position))
@@ -43,6 +48,10 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 
 	public virtual void OnDrop(PointerEventData eventData)
 	{
+		if ((eventData.selectedObject == null))
+		{
+			return;
+		}
 		InventorySlotUI draggingSlot = eventData.selectedObject.GetComponent<InventorySlotUI>();
 		if(draggingSlot == null)
 		{

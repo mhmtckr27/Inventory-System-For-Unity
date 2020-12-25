@@ -13,6 +13,7 @@ public class ChestUI : InventoryUI
 		//We don't have a chest in the beginning. When player interacts with a chest,
 		//that chest's interact function sets CurrentChest as itself.
 		//Inventory = FindObjectOfType<Chest>();
+		rectTransform = GetComponent<RectTransform>();
 		gameManager = FindObjectOfType<GameManager>();
 		InitInventorySlotsUI();
 		DraggingItem = new GameObject("DraggingItem");
@@ -24,6 +25,10 @@ public class ChestUI : InventoryUI
 	{
 		if (currentSlotCount > Inventory.InventorySlotCount)
 		{
+			for (int i = Inventory.InventorySlotCount; i < currentSlotCount; i++)
+			{
+				Destroy(InventorySlotsUI[i].transform.parent.gameObject);
+			}
 			InventorySlotsUI.RemoveRange(Inventory.InventorySlotCount, currentSlotCount - Inventory.InventorySlotCount);
 		}
 		else if (currentSlotCount < Inventory.InventorySlotCount)
@@ -36,6 +41,8 @@ public class ChestUI : InventoryUI
 			}
 		}
 		currentSlotCount = Inventory.InventorySlotCount;
+		
+		rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.CeilToInt((float)currentSlotCount / 3) * 120);
 		UpdateInventorySlotsUI();
 		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
 	}

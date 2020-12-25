@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
 
 	public int GiveItemToPlayer(ItemData itemToGive, int amount)
 	{
+		if(itemToGive == null)
+		{
+			return -1;
+		}
 		int remaining = playerInventory.AddItemDull(itemToGive, amount);
 
 		if(remaining == amount)

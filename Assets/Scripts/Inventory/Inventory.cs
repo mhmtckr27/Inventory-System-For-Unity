@@ -247,6 +247,10 @@ public class Inventory : MonoBehaviour
 
 	public virtual int AddItemDull(ItemData itemToAdd, int amountToAdd)
 	{
+		if(itemToAdd == null)
+		{
+			return -1;
+		}
 		int remaining = amountToAdd;
 		return AddItem(itemToAdd, amountToAdd, ref remaining);
 	}

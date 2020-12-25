@@ -36,6 +36,10 @@ public class DropItemPanel : PanelBase
 
     public void OnRequestDropItemPanelEvent(InventorySlot slot)
     {
+        if(slot.Item == null)
+		{
+            //return;
+		}
         amountSlider.gameObject.SetActive(slot.Item.CanBeStacked && slot.Amount > 1);
         inputField.gameObject.SetActive(slot.Item.CanBeStacked && slot.Amount > 1);
         itemIcon.sprite = slot.Item.Icon;

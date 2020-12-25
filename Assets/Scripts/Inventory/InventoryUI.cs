@@ -10,16 +10,20 @@ public class InventoryUI : MonoBehaviour
 	[SerializeField] private GameObject equipmentSlotPrefab;
 	[SerializeField] private GameObject inventoryWindow;
 	[SerializeField] private Transform equipmentPanelContentTransform;
+	[SerializeField] private GameObject draggingItem;
 	#endregion
 
 	#region Public properties
 	public Inventory Inventory { get => inventory; set => inventory = value; }
-	public GameObject DraggingItem { get; set; }
+	//public GameObject DraggingItem { get; set; }
+	public GameObject InventoryWindow { get => inventoryWindow; set => inventoryWindow = value; }
+	public GameObject DraggingItem { get => draggingItem; set => draggingItem = value; }
 	public List<InventorySlotUI> InventorySlotsUI { get => inventorySlotsUI; set => inventorySlotsUI = value; }
 	#endregion
 
 	#region Private fields
 	private List<InventorySlotUI> inventorySlotsUI;
+	protected RectTransform rectTransform;
 	//private Inventory inventory;
 	#endregion
 
@@ -82,16 +86,16 @@ public class InventoryUI : MonoBehaviour
 	}
 	#endregion
 
-	public GameObject InventoryWindow { get => inventoryWindow; set => inventoryWindow = value; }
-	
+
 	protected virtual void Awake()
 	{
 		//Inventory = FindObjectOfType<Inventory>();
 		InitInventorySlotsUI();
-		DraggingItem = new GameObject("DraggingItem");
-		DraggingItem.transform.parent = transform;
+		//DraggingItem = new GameObject("DraggingItem");
+		//DraggingItem.transform.parent = transform;
 		activePanelType = PanelType.ItemInfo;
 		ActiveSlot = InventorySlotsUI[0];
+		rectTransform = GetComponent<RectTransform>();
 	}
 
 	protected virtual void OnEnable()
@@ -100,7 +104,8 @@ public class InventoryUI : MonoBehaviour
 		{
 			OnSlotUpdatedEvent(i);
 		}
-		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
+		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent; 
+		rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.CeilToInt((float)Inventory.InventorySlotCount / 3) * 120);
 	}
 
 	protected virtual void OnDisable()
@@ -117,6 +122,7 @@ public class InventoryUI : MonoBehaviour
 			InventorySlotsUI[i].SlotIndex = i;
 			InventorySlotsUI[i].InventoryUI = this;
 			InventorySlotsUI[i].UpdateSlotUI(Inventory.InventorySlots[i]);
+
 		}
 
 		for (int i = Inventory.InventorySlotCount; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)

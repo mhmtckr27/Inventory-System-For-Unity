@@ -26,10 +26,7 @@ public class ItemPickup : MonoBehaviour
 	private void OnPickup()
 	{
 		int remaining = gameManager.GiveItemToPlayer(itemToGive, amount);
-		if(remaining == amount)
-		{
 
-		}
 		if (remaining != 0)
 		{
 			amount = remaining;
