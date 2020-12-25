@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			StartCoroutine("OnPickupCoroutine", "Added " + (amount - remaining) + itemToGive.ItemName);
+			StartCoroutine("OnPickupCoroutine", "Added " + (amount - remaining) + " " + itemToGive.ItemName);
 		}
 		return remaining;
 	}

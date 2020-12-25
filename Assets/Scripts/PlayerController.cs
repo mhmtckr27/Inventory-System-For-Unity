@@ -101,15 +101,22 @@ public class PlayerController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
         Chest chest = other.gameObject.GetComponent<Chest>();
-        interactText.gameObject.SetActive(chest != null);
-        InRangeOfInteractable = true;
-        interactableChestInRange = other.gameObject.GetComponent<Chest>();
+        if(chest != null)
+		{
+            interactText.gameObject.SetActive(true);
+            InRangeOfInteractable = true;
+            interactableChestInRange = other.gameObject.GetComponent<Chest>();
+        }
     }
 
 	private void OnTriggerExit(Collider other)
 	{
-        interactText.gameObject.SetActive(!interactText.gameObject.activeInHierarchy);
-        InRangeOfInteractable = false;
-        interactableChestInRange = null;
+        Chest chest = other.gameObject.GetComponent<Chest>();
+        if(chest != null)
+		{
+            interactText.gameObject.SetActive(false);
+            InRangeOfInteractable = false;
+            interactableChestInRange = null;
+        }
     }
 }

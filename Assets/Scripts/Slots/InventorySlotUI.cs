@@ -43,7 +43,12 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 
 	public virtual void OnDrop(PointerEventData eventData)
 	{
-		int draggingItemId = eventData.selectedObject.GetComponent<InventorySlotUI>().itemId;
+		InventorySlotUI draggingSlot = eventData.selectedObject.GetComponent<InventorySlotUI>();
+		if(draggingSlot == null)
+		{
+			return;
+		}
+		int draggingItemId = draggingSlot.itemId;
 		if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition) == true && draggingItemId != -1)
 		{
 			if (itemId == draggingItemId)
