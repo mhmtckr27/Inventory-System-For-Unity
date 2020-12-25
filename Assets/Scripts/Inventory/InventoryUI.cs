@@ -5,6 +5,7 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
 	#region Serialized Fields
+	[SerializeField] private Inventory inventory;
 	[SerializeField] protected GameObject inventorySlotPrefab;
 	[SerializeField] private GameObject equipmentSlotPrefab;
 	[SerializeField] private GameObject inventoryWindow;
@@ -19,7 +20,7 @@ public class InventoryUI : MonoBehaviour
 
 	#region Private fields
 	private List<InventorySlotUI> inventorySlotsUI;
-	private Inventory inventory;
+	//private Inventory inventory;
 	#endregion
 
 	#region Events used for reflecting ui inventory changes to backend inventory script.
@@ -82,7 +83,7 @@ public class InventoryUI : MonoBehaviour
 	
 	protected virtual void Awake()
 	{
-		Inventory = FindObjectOfType<Inventory>();
+		//Inventory = FindObjectOfType<Inventory>();
 		InitInventorySlotsUI();
 		DraggingItem = new GameObject("DraggingItem");
 		DraggingItem.transform.parent = transform;

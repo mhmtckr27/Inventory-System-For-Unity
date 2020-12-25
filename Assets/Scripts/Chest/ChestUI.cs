@@ -22,15 +22,27 @@ public class ChestUI : InventoryUI
 
 	protected override void OnEnable()
 	{
+		if (currentSlotCount > Inventory.InventorySlotCount)
+		{
+			InventorySlotsUI.RemoveRange(Inventory.InventorySlotCount, currentSlotCount - Inventory.InventorySlotCount);
+		}
+		else if (currentSlotCount < Inventory.InventorySlotCount)
+		{
+			for (int i = currentSlotCount; i < Inventory.InventorySlotCount; i++)
+			{
+				InventorySlotsUI.Add(Instantiate(inventorySlotPrefab, Vector3.zero, Quaternion.identity, gameObject.transform).GetComponentInChildren<InventorySlotUI>());
+				InventorySlotsUI[i].SlotIndex = i;
+				InventorySlotsUI[i].InventoryUI = this;
+			}
+		}
+		currentSlotCount = Inventory.InventorySlotCount;
 		for (int i = 0; i < currentSlotCount; i++)
 		{
 			UpdateInventorySlotsUI();
 		}
 		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
 	}
-	private void Update()
-	{
-	}
+
 	protected override void InitInventorySlotsUI()
 	{
 		InventorySlotsUI = new List<InventorySlotUI>();
@@ -44,20 +56,6 @@ public class ChestUI : InventoryUI
 
 	private void UpdateInventorySlotsUI()
 	{
-		if(currentSlotCount > Inventory.InventorySlotCount)
-		{
-			InventorySlotsUI.RemoveRange(Inventory.InventorySlotCount, currentSlotCount - Inventory.InventorySlotCount);
-		}
-		else if(currentSlotCount < Inventory.InventorySlotCount)
-		{
-			for (int i = Inventory.InventorySlotCount; i < Inventory.InventorySlotCount + currentSlotCount; i++)
-			{
-				InventorySlotsUI.Add(Instantiate(inventorySlotPrefab, Vector3.zero, Quaternion.identity, gameObject.transform).GetComponentInChildren<InventorySlotUI>());
-				InventorySlotsUI[i].SlotIndex = i;
-				InventorySlotsUI[i].InventoryUI = this;
-			}
-		}
-		currentSlotCount = Inventory.InventorySlotCount;
 		for (int i = 0; i < currentSlotCount; i++)
 		{
 			InventorySlotsUI[i].UpdateSlotUI(Inventory.InventorySlots[i]);
