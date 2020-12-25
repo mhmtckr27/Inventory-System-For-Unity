@@ -15,7 +15,6 @@ public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler,
     /// <param name="eventData">mouse pointer event data</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Begin Drag");
         lastMousePosition = eventData.position;
     }
 
@@ -45,7 +44,6 @@ public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler,
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End Drag");
         //Implement your funtionlity here
     }
 

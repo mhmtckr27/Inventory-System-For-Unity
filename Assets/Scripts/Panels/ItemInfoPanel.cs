@@ -11,9 +11,9 @@ public class ItemInfoPanel : PanelBase
 	[SerializeField] private Text itemDesc;
 	[SerializeField] private Text itemCategory;
 	[SerializeField] private Text sellPrice;
+	[SerializeField] private InventoryUI inventoryUI;
 
 	private Sprite initalIcon;
-	private InventoryUI inventoryUI;
 
 	private GameObject itemInfoContent;
 
@@ -24,14 +24,10 @@ public class ItemInfoPanel : PanelBase
 		initalIcon = itemIcon.sprite;
 		itemInfoContent = transform.GetChild(0).gameObject;
 		panelType = PanelType.ItemInfo;
-		inventoryUI = FindObjectOfType<InventoryUI>();
 	}
 	private void Start()
 	{
 
-		//inventoryUI.ActiveSlotModifiedEvent += UpdatePanel;
-		//inventoryUI.DisablePanelEvent += OnDisablePanelEvent;
-		//inventoryUI.RequestItemInfoPanelEvent += OnRequestItemInfoPanelEvent;
 	}
 	private void OnEnable()
 	{

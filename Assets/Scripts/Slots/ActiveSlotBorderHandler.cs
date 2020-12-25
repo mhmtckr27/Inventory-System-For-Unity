@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class ActiveSlotBorderHandler : MonoBehaviour
 {
-	private InventoryUI inventoryUI;
+	[SerializeField] private InventoryUI inventoryUI;
 
 	private IEnumerator cor;
-
-	private void Awake()
-	{
-		inventoryUI = FindObjectOfType<InventoryUI>();
-	}
 
 	private void Start()
 	{

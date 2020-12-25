@@ -1,71 +1,68 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SplitStackPanel : PanelBase
+public class DropItemPanel : PanelBase
 {
     [SerializeField] private Image itemIcon;
     [SerializeField] private Text itemName;
     [SerializeField] private Slider amountSlider;
     [SerializeField] private InputField inputField;
+    [SerializeField] private InventoryUI inventoryUI;
 
-    private InventoryUI inventoryUI;
-
-    private GameObject splitStackContent;
+    private GameObject dropItemContent;
 
 	private void Awake()
 	{
-        panelType = PanelType.SplitStack;
-        inventoryUI = FindObjectOfType<InventoryUI>();
-        splitStackContent = transform.GetChild(0).gameObject;
+        panelType = PanelType.DropItem;	
+        dropItemContent = transform.GetChild(0).gameObject;
     }
-    
+
 	private void Start()
 	{
-        
-        //inventoryUI.RequestSplitStackPanelEvent += OnRequestSplitStackPanelEvent;
-        //inventoryUI.DisablePanelEvent += OnDisablePanelEvent;
-        //inventoryUI.ActiveSlotModifiedEvent += OnCancelButton;
+       
     }
 	private void OnEnable()
 	{
-        inventoryUI.RequestSplitStackPanelEvent += OnRequestSplitStackPanelEvent;
+        inventoryUI.RequestDropItemPanelEvent += OnRequestDropItemPanelEvent;
         inventoryUI.DisablePanelEvent += OnDisablePanelEvent;
         inventoryUI.ActiveSlotModifiedEvent += OnCancelButton;
     }
 	private void OnDisable()
 	{
-        inventoryUI.RequestSplitStackPanelEvent -= OnRequestSplitStackPanelEvent;
+        inventoryUI.RequestDropItemPanelEvent -= OnRequestDropItemPanelEvent;
         inventoryUI.DisablePanelEvent -= OnDisablePanelEvent;
-        inventoryUI.ActiveSlotModifiedEvent -= OnCancelButton;
-	}
+        inventoryUI.ActiveSlotModifiedEvent += OnCancelButton;
+    }
 
-	public void OnRequestSplitStackPanelEvent(InventorySlot slot)
+    public void OnRequestDropItemPanelEvent(InventorySlot slot)
     {
+        amountSlider.gameObject.SetActive(slot.Item.CanBeStacked && slot.Amount > 1);
+        inputField.gameObject.SetActive(slot.Item.CanBeStacked && slot.Amount > 1);
         itemIcon.sprite = slot.Item.Icon;
         itemName.text = slot.Item.ItemName;
-        amountSlider.maxValue = slot.Amount - 1;
+        amountSlider.maxValue = slot.Amount;
         amountSlider.value = 1;
-        splitStackContent.SetActive(true);
+        dropItemContent.SetActive(true);
 
         inventoryUI.ActivePanelType = panelType;
     }
 
-    public void OnSplitButton()
+    public void OnDropButton()
     {
-        inventoryUI.SplitStackUI((int)amountSlider.value);
+        inventoryUI.DropItemUI((int)amountSlider.value);
         OnDisablePanelEvent();
     }
 
-    private void OnDisablePanelEvent()
+    public void OnDisablePanelEvent()
     {
-        splitStackContent.SetActive(false);
+        dropItemContent.SetActive(false);
     }
 
     public void OnCancelButton(int dummy)
-    {
-        OnDisablePanelEvent(); 
+	{
+        OnDisablePanelEvent();
         inventoryUI.ActivePanelType = PanelType.Empty;
-    }
+	}
 
     public void OnAmountChanged(float newValue)
     {

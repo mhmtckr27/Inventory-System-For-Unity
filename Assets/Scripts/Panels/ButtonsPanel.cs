@@ -8,12 +8,11 @@ public class ButtonsPanel : MonoBehaviour
 	[SerializeField] private ButtonHandler useButton;
 	[SerializeField] private ButtonHandler splitButton;
 	[SerializeField] private ButtonHandler dropButton;
-
-	private InventoryUI inventoryUI;
+	[SerializeField] private InventoryUI inventoryUI;
 
 	private void Awake()
 	{
-		inventoryUI = FindObjectOfType<InventoryUI>();
+		Debug.Log(inventoryUI.gameObject.name);
 	}
 	private void OnEnable()
 	{

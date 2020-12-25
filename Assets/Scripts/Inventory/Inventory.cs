@@ -1,30 +1,69 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private ItemDatabase itemDatabase;
+	[SerializeField] private ItemDatabase itemDatabase;
 	[SerializeField] private int inventorySlotCount;
 	[SerializeField] private int equipmentSlotCount;
-    [SerializeField] private int maxStackAmount;
+	[SerializeField] private int maxStackAmount;
 	[SerializeField] private InventoryUI inventoryUI;
 
+	#region Properties
+	public ItemDatabase ItemDatabase { get => itemDatabase; set => itemDatabase = value; }
 	public int InventorySlotCount { get => inventorySlotCount; set => inventorySlotCount = value; }
-	public InventorySlot[] InventorySlots { get; set; }
 	public int EquipmentSlotCount { get => equipmentSlotCount; set => equipmentSlotCount = value; }
+	public int MaxStackAmount { get => maxStackAmount; set => maxStackAmount = value; }
+	public InventoryUI InventoryUI { get => inventoryUI; set => inventoryUI = value; }
+	#endregion
 
+	#region Auto Properties
+	public InventorySlot[] InventorySlots { get; set; }
+	#endregion
+
+	#region Events
 	public event Action<int> SlotUpdatedEvent;
+	#endregion
 
-    private void Awake()
+	protected virtual void Awake()
 	{
 		InitInventorySlots();
 	}
 
-	private void InitInventorySlots()
+	protected virtual void OnEnable()
+	{
+		InventoryUI.UseItemEvent += UseItemAtIndex;
+		InventoryUI.DropItemEvent += RemoveItemFromIndex;
+		InventoryUI.SplitStackEvent += SplitStack;
+		InventoryUI.SwapSlotsEvent += SwapSlots;
+		InventoryUI.CombineStacksEvent += CombineStacks;
+	}
+	protected virtual void OnDisable()
+	{
+		InventoryUI.UseItemEvent -= UseItemAtIndex;
+		InventoryUI.DropItemEvent -= RemoveItemFromIndex;
+		InventoryUI.SplitStackEvent -= SplitStack;
+		InventoryUI.SwapSlotsEvent -= SwapSlots;
+		InventoryUI.CombineStacksEvent -= CombineStacks;
+	}
+
+	protected virtual void Update()
+	{
+		if (Input.GetKey(KeyCode.Alpha1))
+		{
+			AddItemDull(ItemDatabase.FindItem("Diamond Ore"), 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			AddItemDull(ItemDatabase.FindItem("New Axe"), 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha3))
+		{
+			AddItemDull(ItemDatabase.FindItem("Diamond Sword"), 1);
+		}
+	}
+
+	protected virtual void InitInventorySlots()
 	{
 		InventorySlots = new InventorySlot[InventorySlotCount + EquipmentSlotCount];
 		for (int i = 0; i < InventorySlotCount; i++)
@@ -37,58 +76,25 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	private void OnEnable()
-	{
-		inventoryUI.UseItemEvent += UseItemAtIndex;
-		inventoryUI.DropItemEvent += RemoveItemFromIndex;
-		inventoryUI.SplitStackEvent += SplitStack;
-		inventoryUI.SwapSlotsEvent += SwapSlots;
-		inventoryUI.CombineStacksEvent += CombineStacks;
-	}
-	private void OnDisable()
-	{
-		inventoryUI.UseItemEvent -= UseItemAtIndex;
-		inventoryUI.DropItemEvent -= RemoveItemFromIndex;
-		inventoryUI.SplitStackEvent -= SplitStack;
-		inventoryUI.SwapSlotsEvent -= SwapSlots;
-		inventoryUI.CombineStacksEvent -= CombineStacks;
-	}
-
-	private void Update()
-	{
-		if (Input.GetKey(KeyCode.Alpha1))
-		{
-			AddItemDull(itemDatabase.FindItem("Diamond Ore"), 1);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			AddItemDull(itemDatabase.FindItem("New Axe"), 1);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			AddItemDull(itemDatabase.FindItem("Diamond Sword"), 1);
-		}
-	}
-
 	//returns true if slot at index is empty.
-	public bool SlotIsEmpty(int index)
+	public virtual bool SlotIsEmpty(int index)
 	{
 		return InventorySlots[index].Amount == 0;
 	}
 
 	//returns the amount at index.
-	private int GetAmountAtIndex(int index)
+	protected virtual int GetAmountAtIndex(int index)
 	{
 		return InventorySlots[index].Amount;
 	}
 
-	public InventorySlot GetSlotAtIndex(int index)
+	public virtual InventorySlot GetSlotAtIndex(int index)
 	{
 		return InventorySlots[index];
 	}
 
 	//removes the given amount from given index. returns true if success.
-	public void RemoveItemFromIndex(int index, int amount)
+	public virtual void RemoveItemFromIndex(int index, int amount)
 	{
 		//check if slot is empty or not
 		if (SlotIsEmpty(index) == false)
@@ -108,23 +114,23 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	private void SwapSlots(int firstIndex, int secondIndex)
-    {
-		if(firstIndex > InventorySlotCount - 1)
+	protected virtual void SwapSlots(int firstIndex, int secondIndex)
+	{
+		if (firstIndex > InventorySlotCount - 1)
 		{
 			if (((EquipmentSlot)InventorySlots[firstIndex]).SlotCategory != InventorySlots[secondIndex].Item.Category)
 			{
-				inventoryUI.InventorySlotsUI[secondIndex].SetSlotActive();
+				InventoryUI.InventorySlotsUI[secondIndex].SetSlotActive();
 				return;
 			}
 		}
-		else if(secondIndex > InventorySlotCount - 1)
+		else if (secondIndex > InventorySlotCount - 1)
 		{
-			if(InventorySlots[firstIndex].Item != null)
+			if (InventorySlots[firstIndex].Item != null)
 			{
 				if (((EquipmentSlot)InventorySlots[secondIndex]).SlotCategory != InventorySlots[firstIndex].Item.Category)
 				{
-					inventoryUI.InventorySlotsUI[secondIndex].SetSlotActive();
+					InventoryUI.InventorySlotsUI[secondIndex].SetSlotActive();
 					return;
 				}
 			}
@@ -135,10 +141,10 @@ public class Inventory : MonoBehaviour
 		tmpSlot.Amount = InventorySlots[firstIndex].Amount;
 		UpdateSlot(InventorySlots[secondIndex].Item, InventorySlots[secondIndex].Amount, firstIndex);
 		UpdateSlot(tmpSlot.Item, tmpSlot.Amount, secondIndex);
-		inventoryUI.InventorySlotsUI[firstIndex].SetSlotActive();
+		InventoryUI.InventorySlotsUI[firstIndex].SetSlotActive();
 	}
 
-	private void SplitStack(int index, int amount)
+	protected virtual void SplitStack(int index, int amount)
 	{
 		int emptySlotIndex = 0;
 		if (EmptySlotExists(ref emptySlotIndex))
@@ -148,13 +154,12 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-
-	private void CombineStacks(int firstIndex, int secondIndex)
+	protected virtual void CombineStacks(int firstIndex, int secondIndex)
 	{
 		int amountToMove;
-		if (InventorySlots[firstIndex].Amount + InventorySlots[secondIndex].Amount > maxStackAmount)
+		if (InventorySlots[firstIndex].Amount + InventorySlots[secondIndex].Amount > MaxStackAmount)
 		{
-			amountToMove = maxStackAmount - InventorySlots[secondIndex].Amount;
+			amountToMove = MaxStackAmount - InventorySlots[secondIndex].Amount;
 		}
 		else
 		{
@@ -162,11 +167,11 @@ public class Inventory : MonoBehaviour
 		}
 		UpdateSlot(InventorySlots[secondIndex].Item, InventorySlots[secondIndex].Amount + amountToMove, secondIndex);
 		RemoveItemFromIndex(firstIndex, amountToMove);
-		inventoryUI.InventorySlotsUI[secondIndex].SetSlotActive();
+		InventoryUI.InventorySlotsUI[secondIndex].SetSlotActive();
 	}
 
-	private void UseItemAtIndex(int index)
-    {
+	protected virtual void UseItemAtIndex(int index)
+	{
 		ItemData itemToUse = InventorySlots[index].Item;
 		if (SlotIsEmpty(index) == true)
 		{
@@ -174,19 +179,19 @@ public class Inventory : MonoBehaviour
 		}
 
 		if (itemToUse.CanBeUsed)
-        {
-			if(itemToUse.Category == ItemCategory.Consumable)
-            {
+		{
+			if (itemToUse.Category == ItemCategory.Consumable)
+			{
 				RemoveItemFromIndex(index, 1);
-            }
+			}
 			itemToUse.OnUse();
-        }
+		}
 		if (itemToUse.CanBeEquipped)
 		{
-			if(index > InventorySlotCount - 1)
+			if (index > InventorySlotCount - 1)
 			{
 				int localFoundIndex = 0;
-				if(EmptySlotExists(ref localFoundIndex))
+				if (EmptySlotExists(ref localFoundIndex))
 				{
 					SwapSlots(localFoundIndex, index);
 				}
@@ -196,10 +201,10 @@ public class Inventory : MonoBehaviour
 				SwapSlots(InventorySlotCount + (int)itemToUse.Category, index);
 			}
 		}
-    }
+	}
 
 	//returns true if there is an empty slot.
-	private bool EmptySlotExists(ref int index)
+	protected virtual bool EmptySlotExists(ref int index)
 	{
 		for (int i = 0; i < InventorySlotCount; i++)
 		{
@@ -213,13 +218,13 @@ public class Inventory : MonoBehaviour
 	}
 
 	//returns true if there is a stack which is not full.
-	private bool NotFullStackExists(ItemData item, ref int index)
+	protected virtual bool NotFullStackExists(ItemData item, ref int index)
 	{
 		for (int i = 0; i < InventorySlotCount; i++)
 		{
 			if (SlotIsEmpty(i) == false)
 			{
-				if (maxStackAmount > InventorySlots[i].Amount && item.ItemId == InventorySlots[i].Item.ItemId)
+				if (MaxStackAmount > InventorySlots[i].Amount && item.ItemId == InventorySlots[i].Item.ItemId)
 				{
 					index = i;
 					return true;
@@ -230,7 +235,7 @@ public class Inventory : MonoBehaviour
 	}
 
 	//updates slot at index with given item and amount.
-	private void UpdateSlot(ItemData item, int amount, int index)
+	protected virtual void UpdateSlot(ItemData item, int amount, int index)
 	{
 		InventorySlots[index].Item = item;
 		InventorySlots[index].Amount = amount;
@@ -240,12 +245,12 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	private int AddItemDull(ItemData itemToAdd, int amountToAdd)
+	public virtual int AddItemDull(ItemData itemToAdd, int amountToAdd)
 	{
 		int remaining = amountToAdd;
 		return AddItem(itemToAdd, amountToAdd, ref remaining);
 	}
-	private int AddItem(ItemData itemToAdd, int amountToAdd, ref int remaining)
+	protected virtual int AddItem(ItemData itemToAdd, int amountToAdd, ref int remaining)
 	{
 		ItemData localItem = itemToAdd;
 		int localFoundIndex = 0;
@@ -259,13 +264,13 @@ public class Inventory : MonoBehaviour
 				//there is a stack that is not full, add to that stack.
 
 				//check if stack can take all we want to add.
-				if (InventorySlots[localFoundIndex].Amount + localAmount > maxStackAmount)
+				if (InventorySlots[localFoundIndex].Amount + localAmount > MaxStackAmount)
 				{
 					//stack CAN NOT take all we want to add. Add until full, then look for another stack or slot to add remaining.
 
-					localAmount = InventorySlots[localFoundIndex].Amount + localAmount - maxStackAmount;
+					localAmount = InventorySlots[localFoundIndex].Amount + localAmount - MaxStackAmount;
 
-					UpdateSlot(itemToAdd, maxStackAmount, localFoundIndex);
+					UpdateSlot(itemToAdd, MaxStackAmount, localFoundIndex);
 
 					return AddItem(localItem, localAmount, ref remaining);
 					//return true;
@@ -284,11 +289,11 @@ public class Inventory : MonoBehaviour
 				//no stack available, search for an empty slot.
 				if (EmptySlotExists(ref localFoundIndex))
 				{
-					if (localAmount > maxStackAmount)
+					if (localAmount > MaxStackAmount)
 					{
 						//exceeds maxstackamount, fill slot and search for another empty slot for remaining.
-						UpdateSlot(itemToAdd, maxStackAmount, localFoundIndex);
-						return AddItem(localItem, localAmount - maxStackAmount, ref remaining);
+						UpdateSlot(itemToAdd, MaxStackAmount, localFoundIndex);
+						return AddItem(localItem, localAmount - MaxStackAmount, ref remaining);
 						//return true;
 					}
 					else

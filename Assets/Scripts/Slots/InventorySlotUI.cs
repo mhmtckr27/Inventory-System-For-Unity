@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -19,7 +16,7 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 	public Image BorderImage { get => borderImage; set => borderImage = value; }
 	public Text CountText { get => countText; set => countText = value; }
 
-	public void OnBeginDrag(PointerEventData eventData)
+	public virtual void OnBeginDrag(PointerEventData eventData)
 	{
 		if(SlotUIIsEmpty() == false)
 		{
@@ -28,12 +25,12 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 		}
 	}
 
-	public void OnDrag(PointerEventData eventData)
+	public virtual void OnDrag(PointerEventData eventData)
 	{
 		InventoryUI.DraggingItem.transform.position = eventData.position;
 	}
 
-	public void OnEndDrag(PointerEventData eventData)
+	public virtual void OnEndDrag(PointerEventData eventData)
 	{
 		itemImage.transform.SetParent(borderImage.transform);
 		itemImage.transform.localPosition = Vector3.zero;
@@ -44,7 +41,7 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 		}
 	}
 
-	public void OnDrop(PointerEventData eventData)
+	public virtual void OnDrop(PointerEventData eventData)
 	{
 		int draggingItemId = eventData.selectedObject.GetComponent<InventorySlotUI>().itemId;
 		if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition) == true && draggingItemId != -1)
@@ -64,7 +61,7 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 		eventData.selectedObject = null;
 	}
 
-	public void UpdateSlotUI(InventorySlot inventorySlot)
+	public virtual void UpdateSlotUI(InventorySlot inventorySlot)
 	{
 		if (inventorySlot.Item == null)
 		{
@@ -87,22 +84,23 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 		}
 	}
 
-	public bool SlotUIIsEmpty()
+	public virtual bool SlotUIIsEmpty()
 	{
 		return itemId == -1;
 	}
 
-	public void OnPointerClick(PointerEventData eventData)
+	public virtual void OnPointerClick(PointerEventData eventData)
 	{
 		SetSlotActive();
-		if(eventData.clickCount == 2)
+		if ((eventData.button == PointerEventData.InputButton.Right) || ((eventData.button == PointerEventData.InputButton.Left) && (eventData.clickCount == 2)))
 		{
 			InventoryUI.UseItemUI();
 			eventData.clickCount = 0;
 		}
+		eventData.selectedObject = null;
 	}
 
-	public void SetSlotActive()
+	public virtual void SetSlotActive()
 	{
 		InventoryUI.ActiveSlot = this;
 		borderButton.Select();

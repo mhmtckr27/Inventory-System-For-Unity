@@ -1,31 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Chest : MonoBehaviour, IInteractable 
+public class Chest : Inventory, IInteractable 
 {
-	[SerializeField] private int slotCount;
-	
-	private InventorySlot[] chestSlots;
-
-	public Chest()
+	[SerializeField] private GameObject chestWindow;
+	protected override void Update()
 	{
-		chestSlots = new InventorySlot[slotCount];
-		for (int i = 0; i < slotCount; i++)
+		if (Input.GetKey(KeyCode.Alpha4))
 		{
-			chestSlots[i] = new InventorySlot();
+			AddItemDull(ItemDatabase.FindItem("Diamond Ore"), 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha5))
+		{
+			AddItemDull(ItemDatabase.FindItem("New Axe"), 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha6))
+		{
+			AddItemDull(ItemDatabase.FindItem("Diamond Sword"), 1);
 		}
 	}
-
-
 	public void Interact()
 	{
-        Debug.Log("Opening chest");
+		InventoryUI.Inventory = this;
+		chestWindow.SetActive(!chestWindow.activeInHierarchy);
+
+		Debug.Log("Opening chest");
 	}
 
-	public void UpdateSlot(ItemData itemToAdd, int Amount)
+	protected override void InitInventorySlots()
 	{
-
+		InventorySlots = new InventorySlot[InventorySlotCount];
+		for (int i = 0; i < InventorySlotCount; i++)
+		{
+			InventorySlots[i] = new InventorySlot();
+		}
+		
 	}
 }

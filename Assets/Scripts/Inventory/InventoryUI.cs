@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
 	#region Serialized Fields
-	[SerializeField] private GameObject inventorySlotPrefab;
+	[SerializeField] protected GameObject inventorySlotPrefab;
 	[SerializeField] private GameObject equipmentSlotPrefab;
 	[SerializeField] private GameObject inventoryWindow;
 	[SerializeField] private Transform equipmentPanelContentTransform;
@@ -54,11 +50,12 @@ public class InventoryUI : MonoBehaviour
 		set
 		{
 			activeSlot = value;
-			ActiveSlotModifiedEvent.Invoke(value.SlotIndex);
+			ActiveSlotModifiedEvent.Invoke(value != null ? value.SlotIndex : -1);
 		}
 	}
 	#endregion
 
+	#region ActivePanelType Property and Event
 	public event Action<PanelType> ActivePanelTypeChangedEvent;
 	private PanelType activePanelType;
 	public PanelType ActivePanelType
@@ -79,10 +76,11 @@ public class InventoryUI : MonoBehaviour
 			ActivePanelTypeChangedEvent.Invoke(value);
 		}
 	}
+	#endregion
 
 	public GameObject InventoryWindow { get => inventoryWindow; set => inventoryWindow = value; }
 	
-	private void Awake()
+	protected virtual void Awake()
 	{
 		Inventory = FindObjectOfType<Inventory>();
 		InitInventorySlotsUI();
@@ -92,7 +90,21 @@ public class InventoryUI : MonoBehaviour
 		ActiveSlot = InventorySlotsUI[0];
 	}
 
-	private void InitInventorySlotsUI()
+	protected virtual void OnEnable()
+	{
+		for (int i = 0; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)
+		{
+			OnSlotUpdatedEvent(i);
+		}
+		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
+	}
+
+	protected virtual void OnDisable()
+	{
+		Inventory.SlotUpdatedEvent -= OnSlotUpdatedEvent;
+	}
+
+	protected virtual void InitInventorySlotsUI()
 	{
 		InventorySlotsUI = new List<InventorySlotUI>();
 		for (int i = 0; i < Inventory.InventorySlotCount; i++)
@@ -103,7 +115,7 @@ public class InventoryUI : MonoBehaviour
 			InventorySlotsUI[i].UpdateSlotUI(Inventory.InventorySlots[i]);
 		}
 
-		for(int i = Inventory.InventorySlotCount; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)
+		for (int i = Inventory.InventorySlotCount; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)
 		{
 			InventorySlotsUI.Add(Instantiate(equipmentSlotPrefab, Vector3.zero, Quaternion.identity, equipmentPanelContentTransform).GetComponentInChildren<EquipmentSlotUI>());
 			InventorySlotsUI[i].SlotIndex = i;
@@ -112,93 +124,80 @@ public class InventoryUI : MonoBehaviour
 		}
 	}
 
-	private void OnEnable()
-	{
-		for (int i = 0; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)
-		{
-			OnSlotUpdatedEvent(i);
-		}
-		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
-	}
-
-	private void OnDisable()
-	{
-		Inventory.SlotUpdatedEvent -= OnSlotUpdatedEvent;
-	}
-
 	public Vector3 GetSlotPosition(int index)
 	{
 		return InventorySlotsUI[index].transform.position;
 	}
 
-
+	
 	#region Reflects backend inventory slot changes to ui slots
-	public void OnSlotUpdatedEvent(int index)
+	public virtual void OnSlotUpdatedEvent(int index)
 	{
+		//Debug.Log(activeSlot);
 		InventorySlotsUI[index].UpdateSlotUI(Inventory.GetSlotAtIndex(index));
-		if(index == activeSlot.SlotIndex)
+		if((activeSlot != null) && (index == activeSlot.SlotIndex))
 		{
 			ActiveSlotModifiedEvent.Invoke(index);
 		}
 	}
 	#endregion
-
+	
 	#region Displaying panels on iteminfo region
 
-	public void OnUseButton()
+	public virtual void OnUseButton()
 	{
 		UseItemUI();
 	}
 
-	public void OnDropButton()
+	public virtual void OnDropButton()
 	{
 		DisablePanelEvent.Invoke();
-		RequestDropItemPanelEvent.Invoke(Inventory.GetSlotAtIndex(activeSlot.SlotIndex));
+		RequestDropItemPanelEvent.Invoke(Inventory.GetSlotAtIndex(ActiveSlot.SlotIndex));
 	}
 
-	public void OnDropButton(InventorySlotUI slotToDrop)
+	public virtual void OnDropButton(InventorySlotUI slotToDrop)
 	{
 		DisablePanelEvent.Invoke();
 		RequestDropItemPanelEvent.Invoke(Inventory.GetSlotAtIndex(slotToDrop.SlotIndex));
 	}
 
-	public void OnSplitButton()
+	public virtual void OnSplitButton()
 	{
 		DisablePanelEvent.Invoke();
-		RequestSplitStackPanelEvent.Invoke(Inventory.GetSlotAtIndex(activeSlot.SlotIndex));
+		RequestSplitStackPanelEvent.Invoke(Inventory.GetSlotAtIndex(ActiveSlot.SlotIndex));
 	}
 	#endregion
 
 
 	#region Reflecting UI changes to backend
-	public void UseItemUI()
+	public virtual void UseItemUI()
 	{
 		UseItemEvent.Invoke(ActiveSlot.SlotIndex);
 		ActiveSlotModifiedEvent.Invoke(ActiveSlot.SlotIndex);
 	}
 
-	public void DropItemUI(int amountToRemove)
+	public virtual void DropItemUI(int amountToRemove)
 	{
 		DropItemEvent.Invoke(ActiveSlot.SlotIndex, amountToRemove);
-		ActiveSlotModifiedEvent.Invoke(activeSlot.SlotIndex);
+		ActiveSlotModifiedEvent.Invoke(ActiveSlot.SlotIndex);
 	}
 
-	public void SplitStackUI(int amountToSplit)
+	public virtual void SplitStackUI(int amountToSplit)
 	{
 		SplitStackEvent.Invoke(ActiveSlot.SlotIndex, amountToSplit);
-		ActiveSlotModifiedEvent.Invoke(activeSlot.SlotIndex);
+		ActiveSlotModifiedEvent.Invoke(ActiveSlot.SlotIndex);
 	}
 
-	public void SwapSlotsUI(int firstIndex, int secondIndex)
+	public virtual void SwapSlotsUI(int firstIndex, int secondIndex)
 	{
 		SwapSlotsEvent.Invoke(firstIndex, secondIndex);
-		ActiveSlotModifiedEvent.Invoke(activeSlot.SlotIndex);
+		ActiveSlotModifiedEvent.Invoke(ActiveSlot.SlotIndex);
 	}
 
-	public void CombineStacksUI(int firstIndex, int secondIndex)
+	public virtual void CombineStacksUI(int firstIndex, int secondIndex)
 	{
 		CombineStacksEvent.Invoke(firstIndex, secondIndex);
-		ActiveSlotModifiedEvent.Invoke(activeSlot.SlotIndex);
+		ActiveSlotModifiedEvent.Invoke(ActiveSlot.SlotIndex);
 	}
 	#endregion
 }

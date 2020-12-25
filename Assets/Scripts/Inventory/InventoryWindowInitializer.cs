@@ -9,7 +9,7 @@ public class InventoryWindowInitializer : MonoBehaviour
 	private void Awake()
 	{
 		inventoryWindow = transform.GetChild(0).gameObject;
-		inventoryWindow.SetActive(true);
-		inventoryWindow.SetActive(false);
+		//inventoryWindow.SetActive(true);
+		//inventoryWindow.SetActive(false);
 	}
 }
