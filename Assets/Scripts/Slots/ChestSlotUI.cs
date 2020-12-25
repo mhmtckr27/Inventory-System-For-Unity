@@ -7,7 +7,9 @@ public class ChestSlotUI : InventorySlotUI, IPointerEnterHandler, IPointerExitHa
 {
 	public override void OnEndDrag(PointerEventData eventData)
 	{
-		//base.OnEndDrag(eventData);
+		itemImage.transform.SetParent(borderImage.transform);
+		itemImage.transform.localPosition = Vector3.zero;
+		eventData.selectedObject = null;
 	}
 
 	public override void OnDrop(PointerEventData eventData)

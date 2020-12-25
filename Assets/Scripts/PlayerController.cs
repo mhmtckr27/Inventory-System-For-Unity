@@ -40,14 +40,10 @@ public class PlayerController : MonoBehaviour
         }
         else if (chestWindow.activeInHierarchy)
 		{
-            if(!inventoryWindow.activeInHierarchy)
-			{
-              //  OpenInventory();
-            }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
 		}
-        if (Input.GetKeyDown(KeyCode.I) && !inventoryWindow.activeInHierarchy)
+        else if (Input.GetKeyDown(KeyCode.I) && !inventoryWindow.activeInHierarchy)
         {
             OpenInventory();
             Cursor.visible = true;

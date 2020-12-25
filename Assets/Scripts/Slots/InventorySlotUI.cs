@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
 {
 	[SerializeField] private int itemId;
-	[SerializeField] private Image itemImage;
-	[SerializeField] private Image borderImage;
+	[SerializeField] protected Image itemImage;
+	[SerializeField] protected Image borderImage;
 	[SerializeField] private Text countText;
 	[SerializeField] private Sprite emptySprite;
 	[SerializeField] private Button borderButton;
