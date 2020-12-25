@@ -36,10 +36,7 @@ public class ChestUI : InventoryUI
 			}
 		}
 		currentSlotCount = Inventory.InventorySlotCount;
-		for (int i = 0; i < currentSlotCount; i++)
-		{
-			UpdateInventorySlotsUI();
-		}
+		UpdateInventorySlotsUI();
 		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
 	}
 
@@ -60,6 +57,7 @@ public class ChestUI : InventoryUI
 		{
 			InventorySlotsUI[i].UpdateSlotUI(Inventory.InventorySlots[i]);
 		}
+		Debug.Log("updated");
 	}
 
 	public void GiveItemToPlayer(int slotIndex)
