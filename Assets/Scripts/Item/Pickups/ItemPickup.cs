@@ -9,6 +9,7 @@ public class ItemPickup : MonoBehaviour
 
 	private GameManager gameManager;
 
+
 	private void OnEnable()
 	{
 		gameManager = FindObjectOfType<GameManager>();
@@ -18,15 +19,24 @@ public class ItemPickup : MonoBehaviour
 	{
 		if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
 		{
-			int remaining = gameManager.GiveItemToPlayer(itemToGive, amount);
-			if(remaining != 0)
-			{
-				amount = remaining;
-			}
-			else
-			{
-				Destroy(gameObject);
-			}
+			OnPickup();
+		}
+	}
+
+	private void OnPickup()
+	{
+		int remaining = gameManager.GiveItemToPlayer(itemToGive, amount);
+		if(remaining == amount)
+		{
+
+		}
+		if (remaining != 0)
+		{
+			amount = remaining;
+		}
+		else
+		{
+			Destroy(gameObject);
 		}
 	}
 }

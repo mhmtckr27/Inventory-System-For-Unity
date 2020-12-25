@@ -97,7 +97,7 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 			InventoryUI.UseItemUI();
 			eventData.clickCount = 0;
 		}
-		eventData.selectedObject = null;
+		//eventData.selectedObject = null;
 	}
 
 	public virtual void SetSlotActive()

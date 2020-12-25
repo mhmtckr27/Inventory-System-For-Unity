@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4051943386633875391}
   - component: {fileID: 4051943386633875390}
   m_Layer: 5
-  m_Name: Slot
+  m_Name: InventorySlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,6 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -307,7 +308,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4051943387592140282}
         m_TargetAssemblyTypeName: InventorySlotUI, Assembly-CSharp
-        m_MethodName: OnClick
+        m_MethodName: SetSlotActive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

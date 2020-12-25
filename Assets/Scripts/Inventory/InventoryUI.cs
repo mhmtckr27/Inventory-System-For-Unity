@@ -51,7 +51,10 @@ public class InventoryUI : MonoBehaviour
 		set
 		{
 			activeSlot = value;
-			ActiveSlotModifiedEvent.Invoke(value != null ? value.SlotIndex : -1);
+			if(ActiveSlotModifiedEvent != null)
+			{
+				ActiveSlotModifiedEvent.Invoke(value != null ? value.SlotIndex : -1);
+			}
 		}
 	}
 	#endregion
@@ -136,7 +139,7 @@ public class InventoryUI : MonoBehaviour
 	{
 		//Debug.Log(activeSlot);
 		InventorySlotsUI[index].UpdateSlotUI(Inventory.GetSlotAtIndex(index));
-		if((activeSlot != null) && (index == activeSlot.SlotIndex))
+		if((activeSlot != null) && (index == activeSlot.SlotIndex) && (ActiveSlotModifiedEvent != null))
 		{
 			ActiveSlotModifiedEvent.Invoke(index);
 		}
