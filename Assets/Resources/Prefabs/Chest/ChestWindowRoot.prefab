@@ -1227,6 +1227,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199802240419622, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 435199802240419622, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}

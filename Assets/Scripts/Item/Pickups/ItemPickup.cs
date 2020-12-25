@@ -7,12 +7,9 @@ public class ItemPickup : MonoBehaviour
 	[SerializeField] private ItemData itemToGive;
 	[SerializeField] private int amount;
 
-	private GameManager gameManager;
-
 
 	private void OnEnable()
 	{
-		gameManager = FindObjectOfType<GameManager>();
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -25,7 +22,7 @@ public class ItemPickup : MonoBehaviour
 
 	private void OnPickup()
 	{
-		int remaining = gameManager.GiveItemToPlayer(itemToGive, amount);
+		int remaining = GameManager.Instance.GiveItemToPlayer(itemToGive, amount);
 
 		if (remaining != 0)
 		{

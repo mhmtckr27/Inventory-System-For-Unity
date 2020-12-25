@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ChestUI : InventoryUI
 {
-	private GameManager gameManager;
 	private int currentSlotCount = 18;
 
 	protected override void Awake()
@@ -14,10 +13,9 @@ public class ChestUI : InventoryUI
 		//that chest's interact function sets CurrentChest as itself.
 		//Inventory = FindObjectOfType<Chest>();
 		rectTransform = GetComponent<RectTransform>();
-		gameManager = FindObjectOfType<GameManager>();
 		InitInventorySlotsUI();
-		DraggingItem = new GameObject("DraggingItem");
-		DraggingItem.transform.parent = transform;
+		//DraggingItem = new GameObject("DraggingItem");
+		//DraggingItem.transform.parent = transform;
 		//ActiveSlot = InventorySlotsUI[10];
 	}
 
@@ -71,7 +69,7 @@ public class ChestUI : InventoryUI
 	{
 		InventorySlot tempSlot = Inventory.GetSlotAtIndex(slotIndex);
 		int amountToAdd = tempSlot.Amount;
-		int remaining = gameManager.GiveItemToPlayer(tempSlot.Item, tempSlot.Amount);
+		int remaining = GameManager.Instance.GiveItemToPlayer(tempSlot.Item, tempSlot.Amount);
 		Inventory.RemoveItemFromIndex(slotIndex, amountToAdd - remaining);
 	}
 }
