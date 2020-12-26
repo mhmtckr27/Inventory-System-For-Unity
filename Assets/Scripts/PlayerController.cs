@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
         }
         if (!inventoryWindow.activeInHierarchy && !chestWindow.activeInHierarchy)
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + Input.GetAxis("Mouse X"), transform.eulerAngles.z);
             if (Input.GetKey(KeyCode.W))
             {
                 transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
@@ -73,7 +72,10 @@ public class PlayerController : MonoBehaviour
             {
                 transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             }
-			if (Input.GetKeyDown(KeyCode.E))
+            Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit);
+            if (Input.GetKeyDown(KeyCode.E) && (hit.collider != null) && hit.collider.GetComponent<Chest>())
 			{
                 if (interactableChestInRange != null)
                 {

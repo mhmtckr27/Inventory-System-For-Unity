@@ -8,14 +8,15 @@ public class ButtonsPanel : MonoBehaviour
 	[SerializeField] private ButtonHandler useButton;
 	[SerializeField] private ButtonHandler splitButton;
 	[SerializeField] private ButtonHandler dropButton;
-	[SerializeField] private InventoryUI inventoryUI;
+	
+	private InventoryUI inventoryUI;
 
-	private void Awake()
-	{
-		Debug.Log(inventoryUI.gameObject.name);
-	}
 	private void OnEnable()
 	{
+		if(inventoryUI == null)
+		{
+			inventoryUI = InventoryUI.Instance;
+		}
 		inventoryUI.ActiveSlotModifiedEvent += UpdateButtons;
 		inventoryUI.ActivePanelTypeChangedEvent += OnActivePanelTypeChanged;
 		UpdateButtons(inventoryUI.ActiveSlot.SlotIndex);

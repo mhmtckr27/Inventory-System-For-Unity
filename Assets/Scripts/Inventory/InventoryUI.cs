@@ -5,7 +5,6 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
 	#region Serialized Fields
-	[SerializeField] private Inventory inventory;
 	[SerializeField] protected GameObject inventorySlotPrefab;
 	[SerializeField] private GameObject equipmentSlotPrefab;
 	[SerializeField] private GameObject inventoryWindow;
@@ -14,6 +13,17 @@ public class InventoryUI : MonoBehaviour
 	#endregion
 
 	#region Public properties
+	public static InventoryUI Instance 
+	{
+		get
+		{
+			if(instance == null)
+			{
+				//instance = FindObjectOfType<InventoryUI>(true);
+			}
+			return instance;
+		}
+	}
 	public Inventory Inventory { get => inventory; set => inventory = value; }
 	//public GameObject DraggingItem { get; set; }
 	public GameObject InventoryWindow { get => inventoryWindow; set => inventoryWindow = value; }
@@ -24,7 +34,8 @@ public class InventoryUI : MonoBehaviour
 	#region Private fields
 	private List<InventorySlotUI> inventorySlotsUI;
 	protected RectTransform rectTransform;
-	//private Inventory inventory;
+	private Inventory inventory;
+	private static InventoryUI instance;
 	#endregion
 
 	#region Events used for reflecting ui inventory changes to backend inventory script.
@@ -89,22 +100,44 @@ public class InventoryUI : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		//Inventory = FindObjectOfType<Inventory>();
-		InitInventorySlotsUI();
-		//DraggingItem = new GameObject("DraggingItem");
-		//DraggingItem.transform.parent = transform;
-		activePanelType = PanelType.ItemInfo;
-		ActiveSlot = InventorySlotsUI[0];
+		if(instance == null)
+		{
+			instance = this;
+		}
+		else if(instance != this)
+		{
+			Destroy(gameObject);
+		}
 		rectTransform = GetComponent<RectTransform>();
 	}
-
+	private void Start()
+	{
+		//inventory = Inventory.Instance;/*
+		/*InitInventorySlotsUI(); 
+		activePanelType = PanelType.ItemInfo;
+		ActiveSlot = InventorySlotsUI[0];
+		InventoryWindow.SetActive(false);*/
+	}
 	protected virtual void OnEnable()
 	{
+		if(inventory == null)
+		{
+			inventory = Inventory.Instance;
+			InitInventorySlotsUI();
+			activePanelType = PanelType.ItemInfo;
+			ActiveSlot = InventorySlotsUI[0];
+			InventoryWindow.SetActive(false);
+		}
+		AdjustScrollableContentSize();
 		for (int i = 0; i < Inventory.InventorySlotCount + Inventory.EquipmentSlotCount; i++)
 		{
 			OnSlotUpdatedEvent(i);
 		}
-		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent; 
+		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
+	}
+
+	private void AdjustScrollableContentSize()
+	{
 		rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.CeilToInt((float)Inventory.InventorySlotCount / 3) * 120);
 	}
 
@@ -143,7 +176,6 @@ public class InventoryUI : MonoBehaviour
 	#region Reflects backend inventory slot changes to ui slots
 	public virtual void OnSlotUpdatedEvent(int index)
 	{
-		//Debug.Log(activeSlot);
 		InventorySlotsUI[index].UpdateSlotUI(Inventory.GetSlotAtIndex(index));
 		if((activeSlot != null) && (index == activeSlot.SlotIndex) && (ActiveSlotModifiedEvent != null))
 		{

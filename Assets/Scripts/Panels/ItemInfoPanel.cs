@@ -42,7 +42,6 @@ public class ItemInfoPanel : PanelBase
 		inventoryUI.ActiveSlotModifiedEvent -= UpdatePanel;
 		inventoryUI.DisablePanelEvent -= OnDisablePanelEvent;
 		inventoryUI.RequestItemInfoPanelEvent -= OnRequestItemInfoPanelEvent;
-		//Debug.Log("cikti");
 	}
 
 	private void OnDisablePanelEvent()

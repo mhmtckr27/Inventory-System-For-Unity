@@ -3,6 +3,15 @@ using UnityEngine;
 public class Chest : Inventory, IInteractable 
 {
 	[SerializeField] private GameObject chestWindow;
+
+	protected override void Awake()
+	{
+		InitInventorySlots();
+	}
+	private void Start()
+	{
+		InventoryUI = ChestUI.Instance;
+	}
 	protected override void Update()
 	{
 		if (Input.GetKey(KeyCode.Alpha4))

@@ -9,16 +9,19 @@ public class ItemInfoPopup : MonoBehaviour
 	[SerializeField] private Text sellPrice;
 
 	private GameObject itemInfoPopup;
-	private InventoryUI chestUI;
+	private ChestUI chestUI;
 
 	private void Awake()
 	{
 		itemInfoPopup = transform.GetChild(0).gameObject;
-		chestUI = FindObjectOfType<ChestUI>();
 	}
 
 	private void OnEnable()
 	{
+		if(chestUI == null)
+		{
+			chestUI = ChestUI.Instance;
+		}
 		chestUI.ActiveSlotModifiedEvent += UpdateItemInfo;
 	}
 

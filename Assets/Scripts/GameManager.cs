@@ -5,23 +5,24 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	private static GameManager instance;
 	[SerializeField] private Text pickupMessage;
+	
 	private Inventory playerInventory;
 
-	public static GameManager Instance { get => instance; set => instance = value; }
+	private static GameManager instance;
+	public static GameManager Instance { get => instance; }
 
 	private void Awake()
 	{
-		if(instance == null)
+		if (instance == null)
 		{
 			instance = this;
 		}
-		else if(instance != this)
+		else if (instance != this)
 		{
 			Destroy(gameObject);
 		}
-		playerInventory = FindObjectOfType<Inventory>();
+		playerInventory = Inventory.Instance;
 	}
 
 	public int GiveItemToPlayer(ItemData itemToGive, int amount)

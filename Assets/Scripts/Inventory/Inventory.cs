@@ -7,7 +7,22 @@ public class Inventory : MonoBehaviour
 	[SerializeField] private int inventorySlotCount;
 	[SerializeField] private int equipmentSlotCount;
 	[SerializeField] private int maxStackAmount;
-	[SerializeField] private InventoryUI inventoryUI;
+	
+	private InventoryUI inventoryUI;
+
+	private static Inventory instance;
+
+	public static Inventory Instance 
+	{
+		get
+		{
+			if(instance == null)
+			{
+				//instance = FindObjectOfType<Inventory>();
+			}
+			return instance;
+		}
+	}
 
 	#region Properties
 	public ItemDatabase ItemDatabase { get => itemDatabase; set => itemDatabase = value; }
@@ -27,18 +42,27 @@ public class Inventory : MonoBehaviour
 
 	protected virtual void Awake()
 	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
 		InitInventorySlots();
 	}
-
-	protected virtual void OnEnable()
+	private void Start()
 	{
+		inventoryUI = InventoryUI.Instance; 
 		InventoryUI.UseItemEvent += UseItemAtIndex;
 		InventoryUI.DropItemEvent += RemoveItemFromIndex;
 		InventoryUI.SplitStackEvent += SplitStack;
 		InventoryUI.SwapSlotsEvent += SwapSlots;
 		InventoryUI.CombineStacksEvent += CombineStacks;
 	}
-	protected virtual void OnDisable()
+
+	protected virtual void OnDestroy()
 	{
 		InventoryUI.UseItemEvent -= UseItemAtIndex;
 		InventoryUI.DropItemEvent -= RemoveItemFromIndex;

@@ -7,20 +7,40 @@ public class ChestUI : InventoryUI
 {
 	private int currentSlotCount = 18;
 
+	private static ChestUI instance;
+	public static new ChestUI Instance 
+	{
+		get
+		{
+			if(instance == null)
+			{
+				//instance = FindObjectOfType<ChestUI>(true);
+			}
+			return instance;
+		}
+	}
+
 	protected override void Awake()
 	{
-		//We don't have a chest in the beginning. When player interacts with a chest,
-		//that chest's interact function sets CurrentChest as itself.
-		//Inventory = FindObjectOfType<Chest>();
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
 		rectTransform = GetComponent<RectTransform>();
 		InitInventorySlotsUI();
-		//DraggingItem = new GameObject("DraggingItem");
-		//DraggingItem.transform.parent = transform;
-		//ActiveSlot = InventorySlotsUI[10];
 	}
 
 	protected override void OnEnable()
 	{
+		if(Inventory == null)
+		{
+			InventoryWindow.SetActive(false);
+			return;
+		}
 		if (currentSlotCount > Inventory.InventorySlotCount)
 		{
 			for (int i = Inventory.InventorySlotCount; i < currentSlotCount; i++)
@@ -43,6 +63,15 @@ public class ChestUI : InventoryUI
 		rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.CeilToInt((float)currentSlotCount / 3) * 120);
 		UpdateInventorySlotsUI();
 		Inventory.SlotUpdatedEvent += OnSlotUpdatedEvent;
+	}
+
+	protected override void OnDisable()
+	{
+		if (Inventory == null) 
+		{
+			return;
+		}
+		Inventory.SlotUpdatedEvent -= OnSlotUpdatedEvent;
 	}
 
 	protected override void InitInventorySlotsUI()
