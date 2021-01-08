@@ -9,9 +9,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject chestWindow;
     [SerializeField] private float moveSpeed = 8;
     [SerializeField] private Text interactText;
+    [SerializeField] private float interactRange = 3f;
 
     private bool inRangeOfInteractable = false;
     private Chest interactableChestInRange;
+    float mouseX;
+    float mouseY;
 
 	public bool InRangeOfInteractable
     {
@@ -32,6 +35,9 @@ public class PlayerController : MonoBehaviour
 
 	void Update()
     {
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
+       // transform.forward = Camera.main.transform.forward;
         if (Input.GetKeyDown(KeyCode.I) && inventoryWindow.activeInHierarchy)
 		{
             CloseInventory();
@@ -58,30 +64,37 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W))
             {
-                transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+                transform.Translate(new Vector3(Camera.main.transform.forward.x, 0,Camera.main.transform.forward.z) * moveSpeed * Time.deltaTime);
             }
             if (Input.GetKey(KeyCode.S))
             {
-                transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                transform.Translate(new Vector3(-Camera.main.transform.forward.x, 0, -Camera.main.transform.forward.z) * moveSpeed * Time.deltaTime);
             }
             if (Input.GetKey(KeyCode.A))
             {
-                transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+                transform.Translate(new Vector3(-Camera.main.transform.right.x, 0, -Camera.main.transform.right.z) * moveSpeed * Time.deltaTime);
             }
             if (Input.GetKey(KeyCode.D))
             {
-                transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+                transform.Translate(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z) * moveSpeed * Time.deltaTime);
             }
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
-            if (Input.GetKeyDown(KeyCode.E) && (hit.collider != null) && hit.collider.GetComponent<Chest>())
+            if ((hit.collider != null) && hit.collider.GetComponent<Chest>() && (hit.distance < interactRange))
 			{
-                if (interactableChestInRange != null)
-                {
+                interactText.gameObject.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+				{
+                    interactableChestInRange = hit.collider.GetComponent<Chest>();
                     interactableChestInRange.Interact();
                 }
+
             }
+			else
+			{
+                interactText.gameObject.SetActive(false);
+			}
         }
     }
 
@@ -98,27 +111,5 @@ public class PlayerController : MonoBehaviour
     public void CloseChest()
 	{
         chestWindow.SetActive(false);
-    }
-
-	private void OnTriggerEnter(Collider other)
-	{
-        Chest chest = other.gameObject.GetComponent<Chest>();
-        if(chest != null)
-		{
-            interactText.gameObject.SetActive(true);
-            InRangeOfInteractable = true;
-            interactableChestInRange = other.gameObject.GetComponent<Chest>();
-        }
-    }
-
-	private void OnTriggerExit(Collider other)
-	{
-        Chest chest = other.gameObject.GetComponent<Chest>();
-        if(chest != null)
-		{
-            interactText.gameObject.SetActive(false);
-            InRangeOfInteractable = false;
-            interactableChestInRange = null;
-        }
     }
 }
