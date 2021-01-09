@@ -13,6 +13,9 @@ public class Chest : Inventory, IInteractable
 	{
 		InventoryUI = ChestUI.Instance;
 		chestWindow = ChestWindow.Instance.gameObject;
+
+		InventoryUI.SwapSlotsEvent += SwapSlots;
+		InventoryUI.CombineStacksEvent += CombineStacks;
 	}
 
 	public void Interact()
