@@ -23,11 +23,12 @@ public class ChestSlotUI : InventorySlotUI, IPointerEnterHandler, IPointerExitHa
 		//SetSlotActive();
 
 		//if right click OR left double-click
-		if ((eventData.button == PointerEventData.InputButton.Right) || ((eventData.button == PointerEventData.InputButton.Left) && (eventData.clickCount == 2)))
+		if (/*(eventData.button == PointerEventData.InputButton.Right) || */((eventData.button == PointerEventData.InputButton.Left) && (eventData.clickCount == 2)))
 		{
 			//try to give item to player
 			(InventoryUI as ChestUI).GiveItemToPlayer(SlotIndex);
 			UpdateSlotUI(InventoryUI.Inventory.GetSlotAtIndex(SlotIndex));
+			eventData.clickCount = 0;
 		}
 		eventData.selectedObject = null;
 	}

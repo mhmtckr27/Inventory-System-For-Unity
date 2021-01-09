@@ -124,9 +124,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.Alpha4))
         {
             testChest.AddItemDull(testChest.ItemDatabase.FindItem("Diamond Ore"), 1);
-
-            Inventory.Instance.AddItemDull(Inventory.Instance.ItemDatabase.FindItem("Diamond Ore"), 150);
-
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
