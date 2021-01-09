@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Axe", menuName = "Item/Axe")]
-
 public class AxeItem : ItemData
 {
 	public override void OnUse()

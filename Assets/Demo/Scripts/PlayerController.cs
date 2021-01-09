@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) && inventoryWindow.activeInHierarchy)
+        if (Input.GetButtonDown("ShowInventory") && inventoryWindow.activeInHierarchy)
 		{
             InventoryWindowRoot.Instance.ShowInventory(false);
             Cursor.visible = false;
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 		}
-        else if (Input.GetKeyDown(KeyCode.I) && !inventoryWindow.activeInHierarchy)
+        else if (Input.GetButtonDown("ShowInventory") && !inventoryWindow.activeInHierarchy)
         {
             InventoryWindowRoot.Instance.ShowInventory(true);
             Cursor.visible = true;
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
             if ((hit.collider != null) && hit.collider.GetComponent<Chest>() && (hit.distance < interactRange))
 			{
                 interactText.gameObject.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetButtonDown("InteractWithChest"))
 				{
                     interactableChestInRange = hit.collider.GetComponent<Chest>();
                     interactableChestInRange.Interact();
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
                 interactText.gameObject.SetActive(false);
 			}
         }
-        else if (chestWindow.activeInHierarchy && Input.GetKeyDown(KeyCode.E))
+        else if (chestWindow.activeInHierarchy && Input.GetButtonDown("InteractWithChest"))
 		{
             ChestWindowRoot.Instance.ShowChest(false); 
             Cursor.visible = false;
@@ -124,6 +124,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.Alpha4))
         {
             testChest.AddItemDull(testChest.ItemDatabase.FindItem("Diamond Ore"), 1);
+
+            Inventory.Instance.AddItemDull(Inventory.Instance.ItemDatabase.FindItem("Diamond Ore"), 150);
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {

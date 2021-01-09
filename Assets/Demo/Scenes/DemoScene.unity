@@ -1760,6 +1760,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 667129957199341189, guid: df76e024bf4c9d0429bc91690c7d55aa, type: 3}
+      propertyPath: m_Text
+      value: '1 - Give Diamond Ore to PLAYER
+
+        2 - Give Silver Axe to PLAYER
+
+        3
+        - Give Diamond Sword to PLAYER
+
+
+        4 - Give Diamond Ore to CHEST
+
+        5
+        - Give Silver Axe to CHEST
+
+        6 - Give Diamond Sword to CHEST
+
+
+        I
+        - Open/close the inventory'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df76e024bf4c9d0429bc91690c7d55aa, type: 3}
 --- !u!1001 &2279773293669200481
