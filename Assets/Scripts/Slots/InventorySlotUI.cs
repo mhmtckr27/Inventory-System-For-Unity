@@ -32,13 +32,13 @@ public class InventorySlotUI : MonoBehaviour, IDropHandler, IDragHandler, IBegin
 
 	public virtual void OnEndDrag(PointerEventData eventData)
 	{
+		itemImage.transform.SetParent(borderImage.transform);
+		itemImage.transform.localPosition = Vector3.zero;
 		if (SlotUIIsEmpty())
 		{
 			eventData.selectedObject = null;
 			return;
 		}
-		itemImage.transform.SetParent(borderImage.transform);
-		itemImage.transform.localPosition = Vector3.zero;
 		if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)InventoryUI.InventoryWindow.transform, eventData.position))
 		{
 			SetSlotActive();
