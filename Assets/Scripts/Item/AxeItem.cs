@@ -8,6 +8,6 @@ public class AxeItem : ItemData
 {
 	public override void OnUse()
 	{
-		Debug.Log("This is an axe!");
+		Debug.Log("Axe Equipped!");
 	}
 }

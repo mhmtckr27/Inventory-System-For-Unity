@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
 		}
 		int remaining = playerInventory.AddItemDull(itemToGive, amount);
 
+		if (pickupMessage == null)
+		{
+			return remaining;
+		}
+
 		if(remaining == amount)
 		{
 			StartCoroutine("OnPickupCoroutine", "Inventory full!");

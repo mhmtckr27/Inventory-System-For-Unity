@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-	#region Serialized Fields
+	#region Inspector attached fields
 	[SerializeField] protected GameObject inventorySlotPrefab;
 	[SerializeField] private GameObject equipmentSlotPrefab;
 	[SerializeField] private GameObject inventoryWindow;
@@ -12,20 +12,19 @@ public class InventoryUI : MonoBehaviour
 	[SerializeField] private GameObject draggingItem;
 	#endregion
 
-	#region Public properties
-	public static InventoryUI Instance 
+	#region Singleton
+	private static InventoryUI instance;
+	public static InventoryUI Instance
 	{
 		get
 		{
-			if(instance == null)
-			{
-				//instance = FindObjectOfType<InventoryUI>(true);
-			}
 			return instance;
 		}
 	}
+	#endregion
+
+	#region Public properties
 	public Inventory Inventory { get => inventory; set => inventory = value; }
-	//public GameObject DraggingItem { get; set; }
 	public GameObject InventoryWindow { get => inventoryWindow; set => inventoryWindow = value; }
 	public GameObject DraggingItem { get => draggingItem; set => draggingItem = value; }
 	public List<InventorySlotUI> InventorySlotsUI { get => inventorySlotsUI; set => inventorySlotsUI = value; }
@@ -35,7 +34,6 @@ public class InventoryUI : MonoBehaviour
 	private List<InventorySlotUI> inventorySlotsUI;
 	protected RectTransform rectTransform;
 	private Inventory inventory;
-	private static InventoryUI instance;
 	#endregion
 
 	#region Events used for reflecting ui inventory changes to backend inventory script.
@@ -100,7 +98,8 @@ public class InventoryUI : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		if(instance == null)
+		#region Singleton
+		if (instance == null)
 		{
 			instance = this;
 		}
@@ -108,16 +107,11 @@ public class InventoryUI : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+		#endregion
+
 		rectTransform = GetComponent<RectTransform>();
 	}
-	private void Start()
-	{
-		//inventory = Inventory.Instance;/*
-		/*InitInventorySlotsUI(); 
-		activePanelType = PanelType.ItemInfo;
-		ActiveSlot = InventorySlotsUI[0];
-		InventoryWindow.SetActive(false);*/
-	}
+
 	protected virtual void OnEnable()
 	{
 		if(inventory == null)
@@ -171,7 +165,6 @@ public class InventoryUI : MonoBehaviour
 	{
 		return InventorySlotsUI[index].transform.position;
 	}
-
 	
 	#region Reflects backend inventory slot changes to ui slots
 	public virtual void OnSlotUpdatedEvent(int index)
@@ -209,7 +202,6 @@ public class InventoryUI : MonoBehaviour
 		RequestSplitStackPanelEvent.Invoke(Inventory.GetSlotAtIndex(ActiveSlot.SlotIndex));
 	}
 	#endregion
-
 
 	#region Reflecting UI changes to backend
 	public virtual void UseItemUI()

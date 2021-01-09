@@ -32,7 +32,7 @@ public class ItemData : ScriptableObject
 	public int BuyPrice { get => buyPrice; set => buyPrice = value; }
 	public bool CanBeEquipped { get => canBeEquipped; set => canBeEquipped = value; }
 
-	public virtual void OnUse() { Debug.Log("This is the itemdata class!"); }
+	public virtual void OnUse() { }
 
 	public string ToStringProperty(int opt)
 	{

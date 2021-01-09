@@ -4,24 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
     [SerializeField] private RectTransform inventoryWindow;
     private Vector2 lastMousePosition;
 
-    /// <summary>
-    /// This method will be called on the start of the mouse drag
-    /// </summary>
-    /// <param name="eventData">mouse pointer event data</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
         lastMousePosition = eventData.position;
     }
 
-    /// <summary>
-    /// This method will be called during the mouse drag
-    /// </summary>
-    /// <param name="eventData">mouse pointer event data</param>
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 currentMousePosition = eventData.position;
@@ -38,20 +30,6 @@ public class DraggingInventory : MonoBehaviour, IDragHandler, IBeginDragHandler,
         lastMousePosition = currentMousePosition;
     }
 
-    /// <summary>
-    /// This method will be called at the end of mouse drag
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        //Implement your funtionlity here
-    }
-
-    /// <summary>
-    /// This methods will check is the rect transform is inside the screen or not
-    /// </summary>
-    /// <param name="rectTransform">Rect Trasform</param>
-    /// <returns></returns>
     private bool IsRectTransformInsideSreen(RectTransform topHandle)
     {
         bool isInside = false;

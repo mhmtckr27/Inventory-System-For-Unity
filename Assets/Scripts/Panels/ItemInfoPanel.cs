@@ -14,10 +14,7 @@ public class ItemInfoPanel : PanelBase
 	[SerializeField] private InventoryUI inventoryUI;
 
 	private Sprite initalIcon;
-
 	private GameObject itemInfoContent;
-
-
 
 	private void Awake()
 	{

@@ -7,7 +7,7 @@ public class ItemDatabase : ScriptableObject
 {
     [SerializeField] private List<ItemData> items = new List<ItemData>();
 
-    public ItemData FindItem(int id)
+	public ItemData FindItem(int id)
 	{
         return items.Find(item => item.ItemId == id);
 	}

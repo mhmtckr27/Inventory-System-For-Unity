@@ -1,16 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class ItemPickup : MonoBehaviour
 {
 	[SerializeField] private ItemData itemToGive;
 	[SerializeField] private int amount;
-
-
-	private void OnEnable()
-	{
-	}
 
 	private void OnTriggerEnter(Collider other)
 	{

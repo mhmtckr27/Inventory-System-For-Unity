@@ -3,26 +3,28 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+	#region Inspector attached fields
 	[SerializeField] private ItemDatabase itemDatabase;
 	[SerializeField] private int inventorySlotCount;
 	[SerializeField] private int equipmentSlotCount;
 	[SerializeField] private int maxStackAmount;
-	
-	private InventoryUI inventoryUI;
+	#endregion
 
+	#region Private fields
+	private InventoryUI inventoryUI;
+	#endregion
+
+	#region Singleton
 	private static Inventory instance;
 
 	public static Inventory Instance 
 	{
 		get
 		{
-			if(instance == null)
-			{
-				//instance = FindObjectOfType<Inventory>();
-			}
 			return instance;
 		}
 	}
+	#endregion
 
 	#region Properties
 	public ItemDatabase ItemDatabase { get => itemDatabase; set => itemDatabase = value; }
@@ -42,6 +44,7 @@ public class Inventory : MonoBehaviour
 
 	protected virtual void Awake()
 	{
+		#region Singleton
 		if (instance == null)
 		{
 			instance = this;
@@ -50,41 +53,32 @@ public class Inventory : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+		#endregion
+
 		InitInventorySlots();
 	}
 	private void Start()
 	{
-		inventoryUI = InventoryUI.Instance; 
+		inventoryUI = InventoryUI.Instance;
+
+		#region Subscribing to inventoryUI events
 		InventoryUI.UseItemEvent += UseItemAtIndex;
 		InventoryUI.DropItemEvent += RemoveItemFromIndex;
 		InventoryUI.SplitStackEvent += SplitStack;
 		InventoryUI.SwapSlotsEvent += SwapSlots;
 		InventoryUI.CombineStacksEvent += CombineStacks;
+		#endregion
 	}
 
 	protected virtual void OnDestroy()
 	{
+		#region Unsubscribing to inventoryUI events
 		InventoryUI.UseItemEvent -= UseItemAtIndex;
 		InventoryUI.DropItemEvent -= RemoveItemFromIndex;
 		InventoryUI.SplitStackEvent -= SplitStack;
 		InventoryUI.SwapSlotsEvent -= SwapSlots;
 		InventoryUI.CombineStacksEvent -= CombineStacks;
-	}
-
-	protected virtual void Update()
-	{
-		if (Input.GetKey(KeyCode.Alpha1))
-		{
-			AddItemDull(ItemDatabase.FindItem("Diamond Ore"), 1);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			AddItemDull(ItemDatabase.FindItem("New Axe"), 1);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			AddItemDull(ItemDatabase.FindItem("Diamond Sword"), 1);
-		}
+		#endregion
 	}
 
 	protected virtual void InitInventorySlots()
@@ -269,6 +263,7 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
+	//call this function instead of AddItem function.
 	public virtual int AddItemDull(ItemData itemToAdd, int amountToAdd)
 	{
 		if(itemToAdd == null)
@@ -278,6 +273,7 @@ public class Inventory : MonoBehaviour
 		int remaining = amountToAdd;
 		return AddItem(itemToAdd, amountToAdd, ref remaining);
 	}
+
 	protected virtual int AddItem(ItemData itemToAdd, int amountToAdd, ref int remaining)
 	{
 		ItemData localItem = itemToAdd;
@@ -371,6 +367,5 @@ public class Inventory : MonoBehaviour
 				return remaining;
 			}
 		}
-
 	}
 }

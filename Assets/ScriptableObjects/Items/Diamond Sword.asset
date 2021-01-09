@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9bc30a3584605b4fa5e0d85cbe0b456, type: 3}
-  m_Name: Emerald Ore
+  m_Name: Diamond Sword
   m_EditorClassIdentifier: 
-  itemId: 1
-  itemName: Emerald Ore
-  description: This is an emerald ore
-  useText: 
-  category: 4
-  icon: {fileID: 21300000, guid: 38bf9a44086778b43a0b8a0e0b2a6c56, type: 3}
-  canBeStacked: 1
-  canBeUsed: 0
+  itemId: 3
+  itemName: Diamond Sword
+  description: A heavy diamond sword which can kill anything quickly
+  useText: Equip
+  category: 1
+  icon: {fileID: 21300000, guid: ad2af5d40d95d0a41ae1b466d4ab2148, type: 3}
+  canBeStacked: 0
+  canBeUsed: 1
+  canBeEquipped: 1
+  sellPrice: 750
+  buyPrice: 1200
   itemProperties:
     m_keys:
-    - Value
-    m_values: 64000000
+    - Damage
+    m_values: 32000000

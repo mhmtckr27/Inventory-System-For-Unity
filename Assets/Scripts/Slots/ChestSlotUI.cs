@@ -17,8 +17,6 @@ public class ChestSlotUI : InventorySlotUI, IPointerEnterHandler, IPointerExitHa
 		base.OnDrop(eventData);
 	}
 
-
-
 	public override void OnPointerClick(PointerEventData eventData)
 	{
 		//dont set slot as active because we dont want to highlight selected slot, we will show item info as mouse hovers.

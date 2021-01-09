@@ -17,11 +17,6 @@ public class SplitStackPanel : PanelBase
         splitStackContent = transform.GetChild(0).gameObject;
     }
     
-	private void Start()
-	{
-        
-
-    }
 	private void OnEnable()
 	{
         inventoryUI.RequestSplitStackPanelEvent += OnRequestSplitStackPanelEvent;

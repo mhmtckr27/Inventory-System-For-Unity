@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Collider))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private GameObject inventoryWindow;
-    [SerializeField] private GameObject chestWindow;
     [SerializeField] private float moveSpeed = 8;
     [SerializeField] private Text interactText;
     [SerializeField] private float interactRange = 3f;
+    [SerializeField] private Chest testChest;
 
+    private GameObject inventoryWindow;
+    private GameObject chestWindow;
     private bool inRangeOfInteractable = false;
     private Chest interactableChestInRange;
-    float mouseX;
-    float mouseY;
 
 	public bool InRangeOfInteractable
     {
@@ -33,27 +33,30 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-	void Update()
+    private void Start()
     {
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
-       // transform.forward = Camera.main.transform.forward;
+        chestWindow = ChestWindow.Instance.gameObject;
+        inventoryWindow = InventoryWindow.Instance.gameObject;
+    }
+
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.I) && inventoryWindow.activeInHierarchy)
 		{
-            CloseInventory();
+            InventoryWindowRoot.Instance.ShowInventory(false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
         else if (chestWindow.activeInHierarchy)
 		{
             Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.None;
 		}
         else if (Input.GetKeyDown(KeyCode.I) && !inventoryWindow.activeInHierarchy)
         {
-            OpenInventory();
+            InventoryWindowRoot.Instance.ShowInventory(true);
             Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.None;
         }
         if (Input.GetMouseButtonDown(0) && Cursor.visible && !inventoryWindow.activeInHierarchy && !chestWindow.activeInHierarchy)
         {
@@ -78,6 +81,7 @@ public class PlayerController : MonoBehaviour
             {
                 transform.Translate(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z) * moveSpeed * Time.deltaTime);
             }
+
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
@@ -89,27 +93,45 @@ public class PlayerController : MonoBehaviour
                     interactableChestInRange = hit.collider.GetComponent<Chest>();
                     interactableChestInRange.Interact();
                 }
-
             }
 			else
 			{
                 interactText.gameObject.SetActive(false);
 			}
         }
-    }
+        else if (chestWindow.activeInHierarchy && Input.GetKeyDown(KeyCode.E))
+		{
+            ChestWindowRoot.Instance.ShowChest(false); 
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
 
-    public void CloseInventory()
-	{
-        inventoryWindow.SetActive(false);
-    }
+        //giving item to player
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            GameManager.Instance.GiveItemToPlayer(Inventory.Instance.ItemDatabase.FindItem("Diamond Ore"), 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            GameManager.Instance.GiveItemToPlayer(Inventory.Instance.ItemDatabase.FindItem("Silver Pickaxe"), 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            GameManager.Instance.GiveItemToPlayer(Inventory.Instance.ItemDatabase.FindItem("Diamond Sword"), 1);
+        }
 
-    public void OpenInventory()
-	{
-        inventoryWindow.SetActive(true);
-    }
-    
-    public void CloseChest()
-	{
-        chestWindow.SetActive(false);
+        //giving item to chest
+        if (Input.GetKey(KeyCode.Alpha4))
+        {
+            testChest.AddItemDull(testChest.ItemDatabase.FindItem("Diamond Ore"), 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            testChest.AddItemDull(testChest.ItemDatabase.FindItem("Silver Pickaxe"), 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            testChest.AddItemDull(testChest.ItemDatabase.FindItem("Diamond Sword"), 1);
+        }
     }
 }

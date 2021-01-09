@@ -1,5 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &439500818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 439500819}
+  m_Layer: 5
+  m_Name: DraggingItem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &439500819
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439500818}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3343637242375712415}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &107018762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,13 +62,14 @@ GameObject:
   - component: {fileID: 6385869693808324881}
   - component: {fileID: 6385869693808324894}
   - component: {fileID: 6385869693808324895}
+  - component: {fileID: 309410761}
   m_Layer: 5
   m_Name: ChestWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4883376515116475590
 RectTransform:
   m_ObjectHideFlags: 0
@@ -111,6 +147,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0
+--- !u!114 &309410761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608903371743590279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e64d64a9e981eb34bbd0565a7542f240, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3343637241144210828
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,6 +647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3343637242372861980}
+  - component: {fileID: 1110971584}
   m_Layer: 5
   m_Name: ChestWindowRoot
   m_TagString: Untagged
@@ -626,6 +675,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1280, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1110971584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3343637242372861983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c1265dfc9bc3874885df65b473f8a2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3343637242470939343
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,10 +807,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: CloseChest
-        m_Mode: 1
+      - m_Target: {fileID: 1110971584}
+        m_TargetAssemblyTypeName: ChestWindowRoot, Assembly-CSharp
+        m_MethodName: ShowChest
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1276,7 +1337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1284,15 +1345,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 920
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 720
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1324,11 +1385,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -400
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1514,6 +1575,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3239120392633495720, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
+      propertyPath: draggingItem
+      value: 
+      objectReference: {fileID: 439500818}
+    - target: {fileID: 3239120392633495720, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
+      propertyPath: inventoryWindow
+      value: 
+      objectReference: {fileID: 608903371743590279}
     - target: {fileID: 3342069177948046835, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1881,6 +1950,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 435199803983798068, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
   m_PrefabInstance: {fileID: 2912949011166449479}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &3343637242375712415 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 435199803986862552, guid: 28fb30b95c7c9764e9df2ef34aaf1038, type: 3}
+  m_PrefabInstance: {fileID: 2912949011166449479}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3450380555048976428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2043,6 +2117,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2031878145279650869, guid: a86c0eb276b0632448cb7160e09419b5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a86c0eb276b0632448cb7160e09419b5, type: 3}
+--- !u!1 &161853932170734730 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3304854456584465574, guid: a86c0eb276b0632448cb7160e09419b5, type: 3}
+  m_PrefabInstance: {fileID: 3450380555048976428}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &161853932170734731 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3304854456584465575, guid: a86c0eb276b0632448cb7160e09419b5, type: 3}
@@ -2081,8 +2160,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &161853932170734730 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3304854456584465574, guid: a86c0eb276b0632448cb7160e09419b5, type: 3}
-  m_PrefabInstance: {fileID: 3450380555048976428}
-  m_PrefabAsset: {fileID: 0}

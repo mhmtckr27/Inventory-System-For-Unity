@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9bc30a3584605b4fa5e0d85cbe0b456, type: 3}
-  m_Name: Diamond Ore
+  m_Name: Emerald Ore
   m_EditorClassIdentifier: 
-  itemId: 2
-  itemName: Diamond Ore
-  description: This is a diamond ore
-  useText: Consume
-  category: 1
-  icon: {fileID: 21300000, guid: 0f8bee8ecfd924740a3f5d89ccd90a58, type: 3}
+  itemId: 1
+  itemName: Emerald Ore
+  description: This is an emerald ore
+  useText: 
+  category: 4
+  icon: {fileID: 21300000, guid: 38bf9a44086778b43a0b8a0e0b2a6c56, type: 3}
   canBeStacked: 1
-  canBeUsed: 1
-  canBeEquipped: 1
-  sellPrice: 250
-  buyPrice: 300
+  canBeUsed: 0
+  canBeEquipped: 0
+  sellPrice: 125
+  buyPrice: 150
   itemProperties:
     m_keys:
     - Value
-    m_values: fa000000
+    m_values: 64000000

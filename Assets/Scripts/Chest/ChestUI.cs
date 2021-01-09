@@ -12,10 +12,6 @@ public class ChestUI : InventoryUI
 	{
 		get
 		{
-			if(instance == null)
-			{
-				//instance = FindObjectOfType<ChestUI>(true);
-			}
 			return instance;
 		}
 	}
@@ -91,7 +87,6 @@ public class ChestUI : InventoryUI
 		{
 			InventorySlotsUI[i].UpdateSlotUI(Inventory.InventorySlots[i]);
 		}
-		Debug.Log("updated");
 	}
 
 	public void GiveItemToPlayer(int slotIndex)

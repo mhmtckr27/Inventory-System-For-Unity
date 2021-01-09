@@ -1,8 +1,9 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class Chest : Inventory, IInteractable 
 {
-	[SerializeField] private GameObject chestWindow;
+	private GameObject chestWindow;
 
 	protected override void Awake()
 	{
@@ -11,28 +12,13 @@ public class Chest : Inventory, IInteractable
 	private void Start()
 	{
 		InventoryUI = ChestUI.Instance;
+		chestWindow = ChestWindow.Instance.gameObject;
 	}
-	protected override void Update()
-	{
-		if (Input.GetKey(KeyCode.Alpha4))
-		{
-			AddItemDull(ItemDatabase.FindItem("Diamond Ore"), 1);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha5))
-		{
-			AddItemDull(ItemDatabase.FindItem("New Axe"), 1);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha6))
-		{
-			AddItemDull(ItemDatabase.FindItem("Diamond Sword"), 1);
-		}
-	}
+
 	public void Interact()
 	{
 		InventoryUI.Inventory = this;
 		chestWindow.SetActive(!chestWindow.activeInHierarchy);
-
-		Debug.Log("Opening chest");
 	}
 
 	protected override void InitInventorySlots()
@@ -42,6 +28,5 @@ public class Chest : Inventory, IInteractable
 		{
 			InventorySlots[i] = new InventorySlot();
 		}
-		
 	}
 }
